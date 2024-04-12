@@ -4,11 +4,17 @@ import { valideData } from "../utils/validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import LoginErrorMssg from "./LoginErrorMssg";
+import { useNavigate } from "react-router-dom";
+import { addUser } from "../utils/userSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [validateObj, setValidateObj] = useState({
     emailValidMssg: null,
@@ -16,6 +22,7 @@ const Login = () => {
     nameValidMssg: null,
   });
   const [signInSignUpErrorMssg, setSignInSignUpErrorMssg] = useState("");
+  const [updateProfileSignUp, setUpdateProfileSignUp] = useState("");
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
@@ -47,6 +54,20 @@ const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://example.com/jane-q-user/profile.jpg",
+          })
+            .then(() => {
+              const { uid, email, displayName } = auth.currentUser;
+              dispatch(addUser({ uid, email, displayName }));
+              // Profile updated!
+              navigate("/browse");
+            })
+            .catch((error) => {
+              // An error occurred
+              setUpdateProfileSignUp(error.message);
+            });
           console.log("Sign Up", user);
         })
         .catch((error) => {
@@ -66,6 +87,7 @@ const Login = () => {
           // Signed in
           const user = userCredential.user;
           console.log("Sign In", user);
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -128,6 +150,9 @@ const Login = () => {
             <p className="text-red-700 ">
               {"💥" + validateObj.passwordValidMssg}
             </p>
+          )}
+          {updateProfileSignUp && (
+            <p className="text-red-700 ">{"💥" + updateProfileSignUp}</p>
           )}
           <button
             className="bg-red-700 w-full my-4 p-2 rounded-lg text-lg font-medium"
