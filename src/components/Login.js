@@ -1,6 +1,12 @@
 import { useState, useRef } from "react";
 import Header from "./Header";
 import { valideData } from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
+import LoginErrorMssg from "./LoginErrorMssg";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -9,11 +15,14 @@ const Login = () => {
     passwordValidMssg: null,
     nameValidMssg: null,
   });
+  const [signInSignUpErrorMssg, setSignInSignUpErrorMssg] = useState("");
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
 
   const handleBtnClick = () => {
+    setSignInSignUpErrorMssg("");
+    //Checking if input is valid
     const validateObj = isSignInForm
       ? valideData(email.current.value, password.current.value)
       : valideData(
@@ -24,6 +33,47 @@ const Login = () => {
         );
 
     setValidateObj(validateObj);
+    console.log(validateObj);
+    //If input is not valid
+    if (!validateObj.isInputValid) return;
+    //If input is valid
+    if (!isSignInForm) {
+      //Sign Up Logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          console.log("Sign Up", user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setSignInSignUpErrorMssg(errorMessage);
+          console.log(errorMessage + errorCode);
+        });
+    } else {
+      //Sign In Logic
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log("Sign In", user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setSignInSignUpErrorMssg(errorMessage);
+          console.log(errorMessage + errorCode);
+        });
+    }
   };
 
   return (
@@ -45,6 +95,9 @@ const Login = () => {
           <h1 className="font-bold text-3xl">
             {isSignInForm ? "Sign In" : "Sign Up"}
           </h1>
+          {signInSignUpErrorMssg && (
+            <LoginErrorMssg errorMssg={signInSignUpErrorMssg} />
+          )}
           {!isSignInForm && (
             <input
               className="bg-black w-full mt-8 px-4 py-2 border-current	border rounded-md"
@@ -87,6 +140,7 @@ const Login = () => {
             <span
               className="cursor-pointer font-medium text-white"
               onClick={() => {
+                setSignInSignUpErrorMssg("");
                 setIsSignInForm(!isSignInForm);
               }}
             >

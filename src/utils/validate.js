@@ -20,6 +20,7 @@ export const valideData = (
           ? null
           : "Your password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.",
         nameValidMssg: isNameValid ? null : "Please enter valid name.",
+        isInputValid: isNameValid && isEmailValid && isPasswordValid,
       }
     : {
         emailValidMssg: isEmailValid
@@ -29,5 +30,6 @@ export const valideData = (
           ? null
           : "Your password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character.",
         nameValidMssg: null,
+        isInputValid: isEmailValid && isPasswordValid,
       };
 };
