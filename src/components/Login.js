@@ -8,13 +8,11 @@ import {
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import LoginErrorMssg from "./LoginErrorMssg";
-import { useNavigate } from "react-router-dom";
 import { addUser } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [validateObj, setValidateObj] = useState({
     emailValidMssg: null,
@@ -62,7 +60,6 @@ const Login = () => {
               const { uid, email, displayName } = auth.currentUser;
               dispatch(addUser({ uid, email, displayName }));
               // Profile updated!
-              navigate("/browse");
             })
             .catch((error) => {
               // An error occurred
@@ -74,7 +71,6 @@ const Login = () => {
           const errorCode = error.code;
           const errorMessage = error.message;
           setSignInSignUpErrorMssg(errorMessage);
-          console.log(errorMessage + errorCode);
         });
     } else {
       //Sign In Logic
@@ -86,14 +82,11 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log("Sign In", user);
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           setSignInSignUpErrorMssg(errorMessage);
-          console.log(errorMessage + errorCode);
         });
     }
   };
