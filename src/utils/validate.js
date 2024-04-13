@@ -1,4 +1,4 @@
-export const valideData = (
+export const validateData = (
   email,
   password,
   validateName = false,
