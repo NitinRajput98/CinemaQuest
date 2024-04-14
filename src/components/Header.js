@@ -40,11 +40,11 @@ const Header = () => {
     return () => unsubscribe();
   }, []);
   return (
-    <div className="w-full absolute">
+    <div className="w-full absolute z-50">
       {location.pathname === "/" && (
         <div className="flex justify-between bg-gradient-to-b from-black">
           <img
-            className="w-48 h-24 p-2 mx-2 my-1 ml-36"
+            className="w-48 h-24 p-2 mx-2 my-1 ml-16 pl-0"
             src={NETFLIX_LOGO}
             alt="logo"
           ></img>
@@ -53,7 +53,7 @@ const Header = () => {
       {location.pathname !== "/" && (
         <div className="flex justify-between bg-gradient-to-b from-zinc-900">
           <img
-            className="w-48 h-24 p-2 mx-2 my-1 ml-36"
+            className="w-48 h-24 p-2 mx-2 my-1 ml-16 pl-0"
             src={NETFLIX_LOGO}
             alt="logo"
           ></img>
