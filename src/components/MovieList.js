@@ -1,5 +1,4 @@
 import { IMAGE_CDN_URL } from "../utils/constants";
-import MovieCard from "./MovieCard";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline"; // Correct import for icons
 import React, { useRef, useState } from "react";
 import MovieModal from "./MovieModal";

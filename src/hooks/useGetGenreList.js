@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { setGenreList } from "../utils/genreSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { API_OPTIONS } from "../utils/constants";
 
 const useGetGenreList = () => {
   const dispatch = useDispatch();
+  const genreList = useSelector((store) => store.genre);
   const getGenreList = async () => {
     try {
       const response = await fetch(
@@ -18,7 +19,7 @@ const useGetGenreList = () => {
     }
   };
   useEffect(() => {
-    getGenreList();
+    if (!genreList) getGenreList();
   }, []);
 };
 

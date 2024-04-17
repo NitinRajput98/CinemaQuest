@@ -13,7 +13,7 @@ const MovieModal = ({ movie, onClose }) => {
   if (!movie) return null;
 
   return (
-    <div className="fixed inset-0  flex justify-center items-center p-4 transition duration-300 ease-in-out transform scale-200">
+    <div className="fixed inset-0  flex justify-center items-center p-4 transition duration-300 ease-in-out transform scale-200 z-50">
       <div className="bg-black  rounded-lg shadow-lg max-w-60 ">
         <img
           src={`${IMAGE_CDN_URL}${movie.backdrop_path}`}

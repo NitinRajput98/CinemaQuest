@@ -3,16 +3,18 @@ import { auth } from "../utils/firebase";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser, removeUser } from "../utils/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AVATAR, NETFLIX_LOGO } from "../utils/constants";
 import { toggleGPTSearchPage } from "../utils/configSlice";
 import { Link } from "react-router-dom";
+import AvatarModal from "./AvatarModal";
 
 const Header = () => {
   const dispatch = useDispatch();
   const isGPTSearchPage = useSelector((store) => store.config.isGPTSearchPage);
   const location = useLocation();
   const navigate = useNavigate();
+  const [avatarOpen, setAvatarOpen] = useState(false);
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
@@ -76,16 +78,17 @@ const Header = () => {
               {isGPTSearchPage ? "HomePage" : "GPT Search"}
             </button>
             <img
-              className="rounded-2xl w-16 h-16 p-2 mt-4 mr-2"
+              className="rounded-2xl w-16 h-16 p-2 mt-4 mr-2 cursor-pointer"
               src={AVATAR}
               alt="avatar"
+              onMouseEnter={() => {
+                setAvatarOpen(true);
+              }}
+              onMouseLeave={() => {
+                setAvatarOpen(false);
+              }}
             ></img>
-            <button
-              onClick={handleSignOut}
-              className="font-semibold text-white m-2"
-            >
-              Sign out
-            </button>
+            {avatarOpen && <AvatarModal handleSignOut={handleSignOut} />}
           </div>
         </div>
       )}
