@@ -11,6 +11,7 @@ import LoginErrorMssg from "./LoginErrorMssg";
 import { addUser } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
 import { AVATAR, NETFLIX_BACKGROUND } from "../utils/constants";
+import { ExclamationCircleIcon } from "@heroicons/react/outline";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -39,7 +40,6 @@ const Login = () => {
         );
 
     setValidateObj(validateObj);
-    console.log(validateObj);
     //If input is not valid
     if (!validateObj.isInputValid) return;
     //If input is valid
@@ -66,7 +66,6 @@ const Login = () => {
               // An error occurred
               setUpdateProfileSignUp(error.message);
             });
-          console.log("Sign Up", user);
         })
         .catch((error) => {
           // const errorCode = error.code;
@@ -95,11 +94,15 @@ const Login = () => {
   return (
     <div className="bg-black bg-opacity-90">
       <div className="absolute">
-        <img src={NETFLIX_BACKGROUND} alt="background-img" />
+        <img
+          className="h-screen object-cover md:h-auto"
+          src={NETFLIX_BACKGROUND}
+          alt="background-img"
+        />
       </div>
       <Header />
 
-      <div className="absolute w-1/3 h-auto bg-black top-28 right-0 left-0 mx-auto my-auto text-white p-20 bg-opacity-80 rounded-md">
+      <div className="absolute w-11/12 md:w-1/3 h-auto bg-black top-28 right-0 left-0 mx-auto my-auto text-white p-20 bg-opacity-80 rounded-md">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -120,7 +123,10 @@ const Login = () => {
             />
           )}
           {!isSignInForm && validateObj.nameValidMssg && (
-            <p className="text-[#ff0000]">{"💥" + validateObj.nameValidMssg}</p>
+            <p className="text-[#ff0000] ">
+              <ExclamationCircleIcon className="w-4 inline-block" />
+              {" " + validateObj.nameValidMssg}
+            </p>
           )}
           <input
             className="bg-black w-full mt-8  px-4 py-2 border-current	 border rounded-md"
@@ -130,7 +136,8 @@ const Login = () => {
           />
           {validateObj.emailValidMssg && (
             <p className="text-[#ff0000]">
-              {"💥" + validateObj.emailValidMssg}
+              <ExclamationCircleIcon className="w-4 inline-block" />
+              {" " + validateObj.emailValidMssg}
             </p>
           )}
           <input
@@ -141,11 +148,15 @@ const Login = () => {
           />
           {validateObj.passwordValidMssg && (
             <p className="text-[#ff0000] ">
-              {"💥" + validateObj.passwordValidMssg}
+              <ExclamationCircleIcon className="w-4 inline-block" />
+              {" " + validateObj.passwordValidMssg}
             </p>
           )}
           {updateProfileSignUp && (
-            <p className="text-[#ff0000] ">{"💥" + updateProfileSignUp}</p>
+            <p className="text-[#ff0000] ">
+              <ExclamationCircleIcon className="w-4 inline-block" />
+              {" " + updateProfileSignUp}
+            </p>
           )}
           <button
             className="bg-red-700 w-full my-4 p-2 rounded-lg text-lg font-medium"

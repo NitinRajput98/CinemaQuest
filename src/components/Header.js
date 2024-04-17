@@ -45,16 +45,26 @@ const Header = () => {
       }
     });
 
+    const handler = (e) => {
+      if (!e.target.closest("#avatar-modal") && e.target.id !== "avatar-img")
+        setAvatarOpen(false);
+    };
+
+    window.addEventListener("click", handler);
+
     //Unsubscribe when component unmounts
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      window.removeEventListener("click", handler);
+    };
   }, []);
   return (
     <div className="w-full absolute z-50">
       {location.pathname === "/" && (
-        <div className="flex justify-between bg-gradient-to-b from-black">
+        <div className="flex justify-normal md:justify-between bg-gradient-to-b from-black">
           <Link to="/">
             <img
-              className="w-48 h-24 p-2 mx-2 my-1 ml-16 pl-0"
+              className="w-48 h-24 p-2 mx-2 my-1 md:ml-16 pl-0 ml-28"
               src={NETFLIX_LOGO}
               alt="logo"
             ></img>
@@ -81,14 +91,23 @@ const Header = () => {
               className="rounded-2xl w-16 h-16 p-2 mt-4 mr-2 cursor-pointer"
               src={AVATAR}
               alt="avatar"
-              onMouseEnter={() => {
+              id="avatar-img"
+              // onMouseEnter={() => {
+              //   setAvatarOpen(true);
+              // }}
+              // onMouseLeave={() => {
+              //   setAvatarOpen(false);
+              // }}
+              onClick={() => {
                 setAvatarOpen(true);
               }}
-              onMouseLeave={() => {
-                setAvatarOpen(false);
-              }}
             ></img>
-            {avatarOpen && <AvatarModal handleSignOut={handleSignOut} />}
+            {avatarOpen && (
+              <AvatarModal
+                handleSignOut={handleSignOut}
+                setAvatarOpen={setAvatarOpen}
+              />
+            )}
           </div>
         </div>
       )}
