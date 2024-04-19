@@ -8,6 +8,7 @@ import { AVATAR, NETFLIX_LOGO } from "../utils/constants";
 import { toggleGPTSearchPage } from "../utils/configSlice";
 import { Link } from "react-router-dom";
 import AvatarModal from "./AvatarModal";
+import { SearchIcon } from "@heroicons/react/outline";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -83,9 +84,14 @@ const Header = () => {
           <div className="flex">
             <button
               onClick={handleGptSearch}
-              className="w-40 h-8 mt-10 m-2 text-white bg-purple-900 rounded-lg"
+              className="w-40 h-8 mt-10 m-2 text-white hover:text-gray-400 rounded-lg flex"
             >
-              {isGPTSearchPage ? "HomePage" : "GPT Search"}
+              {/* {location.pathname === "/browse" && ( */}
+              <SearchIcon
+                className={!isGPTSearchPage ? `w-6 mr-2` : `hidden`}
+              />
+              {/* )} */}
+              <p>{isGPTSearchPage ? "Home" : "GPT Search"}</p>
             </button>
             <img
               className="rounded-2xl w-16 h-16 p-2 mt-4 mr-2 cursor-pointer"
