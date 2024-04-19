@@ -5,7 +5,7 @@ import { API_OPTIONS } from "../utils/constants";
 
 const useGetGenreList = () => {
   const dispatch = useDispatch();
-  const genreList = useSelector((store) => store.genre);
+  const genreList = useSelector((store) => store.genre.genreList);
   const getGenreList = async () => {
     try {
       const response = await fetch(
