@@ -14,17 +14,20 @@ const SwiperMovie = ({ title, movies }) => {
       <h1 className="text-white text-2xl my-4">{title}</h1>
       <Swiper
         modules={[Navigation]}
-        spaceBetween={0}
+        spaceBetween={20}
         slidesPerView={7}
         navigation={true}
       >
         {movies &&
           movies.map((movie, index) => (
-            <SwiperSlide key={movie.id} virtualIndex={index}>
+            <SwiperSlide
+              key={movie.id}
+              virtualIndex={index}
+              className="w-44 h-56 rounded-3xl transition duration-100 ease-in-out transform hover:scale-105 hover:rounded-lg"
+            >
               <img
                 src={`${IMAGE_CDN_URL}${movie.poster_path}`}
                 alt={movie.title}
-                className="w-44 h-56 rounded-lg transition duration-100 ease-in-out transform hover:scale-105 hover:rounded-lg"
               />
             </SwiperSlide>
           ))}
