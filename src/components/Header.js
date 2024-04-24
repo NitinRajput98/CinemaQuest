@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import AvatarModal from "./AvatarModal";
 import { SearchIcon } from "@heroicons/react/outline";
 
-const Header = () => {
+const Header = (props) => {
   const dispatch = useDispatch();
   const isGPTSearchPage = useSelector((store) => store.config.isGPTSearchPage);
   const location = useLocation();
@@ -34,6 +34,7 @@ const Header = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        props?.setProgress && props?.setProgress(100);
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         const { uid, email, displayName } = user;

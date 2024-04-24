@@ -12,6 +12,7 @@ import { addUser } from "../utils/userSlice";
 import { useDispatch } from "react-redux";
 import { AVATAR, NETFLIX_BACKGROUND } from "../utils/constants";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
+import LoadingBar from "react-top-loading-bar";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const Login = () => {
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
+  const [progress, setProgress] = useState(0);
 
   const handleBtnClick = () => {
     setSignInSignUpErrorMssg("");
@@ -42,6 +44,7 @@ const Login = () => {
     setValidateObj(validateObj);
     //If input is not valid
     if (!validateObj.isInputValid) return;
+    setProgress(100);
     //If input is valid
     if (!isSignInForm) {
       //Sign Up Logic
@@ -51,6 +54,7 @@ const Login = () => {
         password.current.value
       )
         .then((userCredential) => {
+          setProgress(100);
           // Signed up
           const user = userCredential.user;
           updateProfile(user, {
@@ -58,16 +62,19 @@ const Login = () => {
             photoURL: AVATAR,
           })
             .then(() => {
+              setProgress(100);
               const { uid, email, displayName } = auth.currentUser;
               dispatch(addUser({ uid, email, displayName }));
               // Profile updated!
             })
             .catch((error) => {
+              setProgress(100);
               // An error occurred
               setUpdateProfileSignUp(error.message);
             });
         })
         .catch((error) => {
+          setProgress(100);
           // const errorCode = error.code;
           const errorMessage = error.message;
           setSignInSignUpErrorMssg(errorMessage);
@@ -80,10 +87,12 @@ const Login = () => {
         password.current.value
       )
         .then((userCredential) => {
+          setProgress(100);
           // Signed in
           // const user = userCredential.user;
         })
         .catch((error) => {
+          setProgress(100);
           // const errorCode = error.code;
           const errorMessage = error.message;
           setSignInSignUpErrorMssg(errorMessage);
@@ -100,7 +109,12 @@ const Login = () => {
           alt="background-img"
         />
       </div>
-      <Header />
+      <Header setProgress={setProgress} progress={progress} />
+      <LoadingBar
+        color={"#f11946"}
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
 
       <div className="absolute w-11/12 md:w-1/3 h-auto bg-black top-28 right-0 left-0 mx-auto my-auto text-white p-20 bg-opacity-80 rounded-md">
         <form
