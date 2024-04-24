@@ -13,9 +13,11 @@ import { useDispatch } from "react-redux";
 import { AVATAR, NETFLIX_BACKGROUND } from "../utils/constants";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import LoadingBar from "react-top-loading-bar";
+import Loader from "./Loader";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const [btnClicked, setBtnClicked] = useState(false);
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [validateObj, setValidateObj] = useState({
     emailValidMssg: null,
@@ -45,6 +47,7 @@ const Login = () => {
     //If input is not valid
     if (!validateObj.isInputValid) return;
     setProgress(100);
+    setBtnClicked(true);
     //If input is valid
     if (!isSignInForm) {
       //Sign Up Logic
@@ -68,6 +71,7 @@ const Login = () => {
               // Profile updated!
             })
             .catch((error) => {
+              setBtnClicked(false);
               setProgress(100);
               // An error occurred
               setUpdateProfileSignUp(error.message);
@@ -75,6 +79,7 @@ const Login = () => {
         })
         .catch((error) => {
           setProgress(100);
+          setBtnClicked(false);
           // const errorCode = error.code;
           const errorMessage = error.message;
           setSignInSignUpErrorMssg(errorMessage);
@@ -88,11 +93,13 @@ const Login = () => {
       )
         .then((userCredential) => {
           setProgress(100);
+          setBtnClicked(false);
           // Signed in
           // const user = userCredential.user;
         })
         .catch((error) => {
           setProgress(100);
+          setBtnClicked(false);
           // const errorCode = error.code;
           const errorMessage = error.message;
           setSignInSignUpErrorMssg(errorMessage);
@@ -174,9 +181,21 @@ const Login = () => {
           )}
           <button
             className="bg-red-700 w-full my-4 p-2 rounded-lg text-lg font-medium"
+            disabled={btnClicked ? true : false}
             onClick={handleBtnClick}
           >
-            {isSignInForm ? "Sign In" : "Sign Up"}
+            {/* {isSignInForm ? "Sign In" : "Sign Up"} */}
+            {btnClicked ? (
+              <Loader
+                styles={
+                  "animate-spin rounded-full w-8 h-8 border-b-2 border-white"
+                }
+              />
+            ) : isSignInForm ? (
+              "Sign In"
+            ) : (
+              "Sign Up"
+            )}
           </button>
           <p className="text-gray-400 font-light my-4">
             {isSignInForm ? "New to Netflix? " : "Already registered? "}
