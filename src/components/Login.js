@@ -14,7 +14,7 @@ import { AVATAR, NETFLIX_BACKGROUND } from "../utils/constants";
 import { ExclamationCircleIcon } from "@heroicons/react/outline";
 import LoadingBar from "react-top-loading-bar";
 import Loader from "./Loader";
-
+// Login file
 const Login = () => {
   const dispatch = useDispatch();
   const [btnClicked, setBtnClicked] = useState(false);
